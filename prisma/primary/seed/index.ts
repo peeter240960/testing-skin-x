@@ -1,21 +1,27 @@
-
+import { seedAccount } from './account';
 import { client } from './client';
-import { seedPosts } from './posts/post';
-async function cleanup() {
-  const tablenamesList = (await client.$queryRaw`SELECT tablename FROM pg_tables WHERE schemaname='public'`) as {
-    tablename: string;
-  }[];
+import { seedPost } from './posts';
 
-  const tablenames = tablenamesList.filter(({ tablename }) => tablename !== '_prisma_migrations').map((t) => t.tablename);
+async function cleanup() {
+  const tablenamesList =
+    (await client.$queryRaw`SELECT tablename FROM pg_tables WHERE schemaname='public'`) as {
+      tablename: string;
+    }[];
+
+  const tablenames = tablenamesList
+    .filter(({ tablename }) => tablename !== '_prisma_migrations')
+    .map((t) => t.tablename);
 
   for (const tablename of tablenames) {
-    await client.$executeRawUnsafe(`TRUNCATE TABLE "public"."${tablename}" CASCADE;`);
+    await client.$executeRawUnsafe(
+      `TRUNCATE TABLE "public"."${tablename}" CASCADE;`
+    );
   }
 }
 
 async function main() {
   await cleanup(); // clean db
-  await seedPosts()
+  await seedAccount();
+  await seedPost();
 }
-
 main();

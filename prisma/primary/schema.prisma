@@ -13,44 +13,39 @@ model Account {
   username String @unique
   password String
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime?     @updatedAt
-  createdBy   String
-  updatedBy   String?
-  AccountPost AccountPost[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  createdBy String
+  updatedBy String?
 
   @@map("account")
 }
 
 model Post {
-  id       String   @id @default(uuid()) @db.Uuid
+  id       String @id @default(uuid()) @db.Uuid
   title    String
-  content  String
+  content  String @db.Text
   postedAt String
   postedBy String
-  tags     String[]
 
-  updatedAt   DateTime?     @updatedAt
-  updatedBy   String?
-  PostTag     PostTag[]
-  AccountPost AccountPost[]
+  updatedAt DateTime? @updatedAt
+  updatedBy String?
+  PostTag   PostTag[]
 
   @@map("post")
 }
 
-model AccountPost {
-  id        String @id @default(uuid()) @db.Uuid
-  postId    String @unique @db.Uuid
-  accountId String @db.Uuid
+model Tag {
+  id    String @id @default(uuid()) @db.Uuid
+  name String @unique
 
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   createdBy String
   updatedBy String?
-  Account   Account   @relation(fields: [accountId], references: [id])
-  Post      Post      @relation(fields: [postId], references: [id])
+  PostTag   PostTag[]
 
-  @@map("account_post")
+  @@map("tag")
 }
 
 model PostTag {
@@ -66,17 +61,4 @@ model PostTag {
   Post      Post      @relation(fields: [postId], references: [id])
 
   @@map("post_tag")
-}
-
-model Tag {
-  id    String @id @default(uuid()) @db.Uuid
-  title String @unique @db.Uuid
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-  createdBy String
-  updatedBy String?
-  PostTag   PostTag[]
-
-  @@map("tag")
 }
