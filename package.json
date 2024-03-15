@@ -10,6 +10,8 @@
     "db-primary:seed": "ts-node prisma/primary/seed/index.ts",
     "db-primary:studio": "prisma studio --schema prisma/primary/schema.prisma",
     "blogs:dev": "nx run blogs:serve",
+    "backend:dev": "nx run backend:serve",
+    "backend:test": "nx run backend:test",
     "codegen": "ts-node --project tools/tsconfig.tools.json -r tsconfig-paths/register tools/bin/codegen.ts",
     "genql": "ts-node --project tools/tsconfig.tools.json -r tsconfig-paths/register tools/bin/genql.ts"
   },

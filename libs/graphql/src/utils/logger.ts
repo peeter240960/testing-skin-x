@@ -9,13 +9,20 @@ type MercuriusLoggingOptions = {
   logVariables?: boolean;
 };
 
-function readOperations(document: DocumentNode, operation: 'mutation' | 'query' | 'subscription', opts: MercuriusLoggingOptions) {
+function readOperations(
+  document: DocumentNode,
+  operation: 'mutation' | 'query' | 'subscription',
+  opts: MercuriusLoggingOptions
+) {
   return document.definitions
-    .filter((d) => d.kind === 'OperationDefinition' && d.operation === operation)
+    .filter(
+      (d) => d.kind === 'OperationDefinition' && d.operation === operation
+    )
     .flatMap(
       (d) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (d as unknown as { selectionSet: { selections: any } }).selectionSet.selections
+        (d as unknown as { selectionSet: { selections: any } }).selectionSet
+          .selections
     )
     .map((selectionSet) => {
       const opName = selectionSet.name.value;
@@ -29,7 +36,12 @@ function readOperations(document: DocumentNode, operation: 'mutation' | 'query' 
 }
 
 export function graphqlLogger(serviceName: string) {
-  return (_schema: GraphQLSchema, document: DocumentNode, context: MercuriusContext, variables: Record<string, unknown>) => {
+  return (
+    _schema: GraphQLSchema,
+    document: DocumentNode,
+    context: MercuriusContext,
+    variables: Record<string, unknown>
+  ) => {
     const queryOps = readOperations(document, 'query', { prependAlias: true });
     const mutationOps = readOperations(document, 'mutation', {
       prependAlias: true,
@@ -39,16 +51,21 @@ export function graphqlLogger(serviceName: string) {
     });
     const headers = context.reply.request.headers;
 
-    logger.info({
-      serviceName,
-      headers,
-      graphql: {
-        queries: queryOps.length > 0 ? queryOps : undefined,
-        mutations: mutationOps.length > 0 ? mutationOps : undefined,
-        subscriptionOps: subscriptionOps.length > 0 ? subscriptionOps : undefined,
-        operationName: (context.reply.request.body as { operationName: string })?.operationName,
-        variables,
-      },
-    });
+    logger.info(
+      JSON.stringify({
+        serviceName,
+        headers,
+        graphql: {
+          queries: queryOps.length > 0 ? queryOps : undefined,
+          mutations: mutationOps.length > 0 ? mutationOps : undefined,
+          subscriptionOps:
+            subscriptionOps.length > 0 ? subscriptionOps : undefined,
+          operationName: (
+            context.reply.request.body as { operationName: string }
+          )?.operationName,
+          variables,
+        },
+      })
+    );
   };
 }

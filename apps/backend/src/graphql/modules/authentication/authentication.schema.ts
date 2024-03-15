@@ -1,13 +1,15 @@
 import gql from 'graphql-tag';
 
 export const typeDef = gql`
+  type Account {
+    id: String!
+    username: String!
+  }
   type Authentication {
+    account: Account!
     token: String!
-    refreshToken: String!
     expire: Int
-    expireRefreshToken: Int
-    projectIds: [String!]
-    projectId: String
+    refreshToken: String!
   }
 
   type LogoutOperationResponse {
@@ -18,5 +20,8 @@ export const typeDef = gql`
     login(username: String!, password: String!): Authentication!
     refreshToken(refreshToken: String!): Authentication!
     logout(refreshToken: String!): LogoutOperationResponse! @authorize
+  }
+  type Query {
+    profile: Account! @authorize
   }
 `;

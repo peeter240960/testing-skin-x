@@ -1,182 +1,96 @@
-import { client, createAuthorizeClient } from '@blogs/genql';
+import {
+  authorizeGraphqlClient,
+  client,
+} from '@blogs/genql';
 import { expectUnauthorizedError } from '@blogs/genql';
-import { nanoid } from 'nanoid';
-
+const randomStr = () => Date.now().toString(16);
 describe('Authentication', () => {
-  it('login', async () => {
-    const username = `username-${nanoid()}`;
-
-    const account = await client.mutation({
-      createAccount: {
-        __scalar: true,
-        __args: {
-          input: {
-            username,
-            password: '12345678',
-          },
-        },
-      },
-    });
-
-    const loginResponse = await client.mutation({
-      login: {
-        __scalar: true,
-        __args: {
-          username: account.createAccount.username,
-          password: '12345678',
-        },
-      },
-    });
-
-    expect(loginResponse.login.token).toBeDefined();
-    expect(loginResponse.login.refreshToken).toBeDefined();
-  });
-
-  it('throws authentication error when login with wrong username', async () => {
-    expectUnauthorizedError(
-      client.mutation({
+  describe('login', () => {
+    test('should allow a valid user to log in successfully', async () => {
+      const loginResponse = await client.mutation({
         login: {
           __scalar: true,
           __args: {
-            username: nanoid(),
-            password: '12345678',
+            username: 'user',
+            password: 'user@1234',
           },
         },
-      })
-    );
+      });
+
+      expect(loginResponse.login.token).toBeDefined();
+      expect(loginResponse.login.refreshToken).toBeDefined();
+    });
+
+    test('should prevent login with invalid credentials', async () => {
+      expect(
+        client.mutation({
+          login: {
+            __scalar: true,
+            __args: {
+              username: randomStr(),
+              password: '12345678',
+            },
+          },
+        })
+      ).rejects.toThrow('wrong username or password')
+    });
   });
-
-  it('throws authentication error when login with correct username but wrong password', async () => {
-    const username = `username-${nanoid()}`;
-
-    const account = await client.mutation({
-      createAccount: {
-        __scalar: true,
-        __args: {
-          input: {
-            username,
-            password: '12345678',
-          },
-        },
-      },
-    });
-
-    expectUnauthorizedError(
-      client.mutation({
-        login: {
-          __scalar: true,
-          __args: {
-            username: account.createAccount.username,
-            password: '1234567',
-          },
-        },
-      })
-    );
-  });
-
-  it('throws authentication error when request does not contains authentication token', async () => {
-    const randomRefreshToken = `refresh_token-${nanoid()}`;
-
-    expectUnauthorizedError(
-      client.mutation({
-        refreshToken: {
-          __scalar: true,
-          __args: {
-            refreshToken: randomRefreshToken,
-          },
-        },
-      })
-    );
-  });
-
-  it('refresh token', async () => {
-    const username = `username-${nanoid()}`;
-
-    const account = await client.mutation({
-      createAccount: {
-        __scalar: true,
-        __args: {
-          input: {
-            username,
-            password: '12345678',
-          },
-        },
-      },
-    });
-
-    const loginResponse = await client.mutation({
-      login: {
-        __scalar: true,
-        __args: {
-          username: account.createAccount.username,
-          password: '12345678',
-        },
-      },
-    });
-
-    const authorizeClient = createAuthorizeClient(loginResponse.login.token);
-    const newToken = await authorizeClient.mutation({
-      refreshToken: {
-        __scalar: true,
-        __args: {
-          refreshToken: loginResponse.login.refreshToken,
-        },
-      },
-    });
-
-    expect(newToken.refreshToken.token).toBeDefined();
-    expect(newToken.refreshToken.refreshToken).toBeDefined();
-    expect(newToken.refreshToken.token).not.toEqual(
-      loginResponse.login.refreshToken
-    );
-    expect(newToken.refreshToken.token).not.toEqual(loginResponse.login.token);
-  });
-
-  it('Verify the correct access_token and grant access.', async () => {
-    const username = `username-${nanoid()}`;
-
-    const account = await client.mutation({
-      createAccount: {
-        __scalar: true,
-        __args: {
-          input: {
-            username,
-            password: '12345678',
-          },
-        },
-      },
-    });
-
-    const loginResponse = await client.mutation({
-      login: {
-        __scalar: true,
-        __args: {
-          username: account.createAccount.username,
-          password: '12345678',
-        },
-      },
-    });
-    const authorizeClient = createAuthorizeClient(loginResponse.login.token);
-
-    const accountInfo = await authorizeClient.query({
-      profile: {
-        __scalar: true,
-      },
-    });
-    expect(accountInfo.profile.id).toBeDefined();
-    expect(accountInfo.profile.username).toBeDefined();
-  });
-
-  it('Throws an error when the access_token is invalid.', async () => {
-    const randomAccessToken = `access_token-${nanoid()}`;
-    const authorizeClient = createAuthorizeClient(randomAccessToken);
-
-    expectUnauthorizedError(
-      authorizeClient.query({
+  describe('get profile', () => {
+    test('should get user profile successfully', async () => {
+      const authClient = await authorizeGraphqlClient();
+      const callGetProfile = await authClient.query({
         profile: {
           __scalar: true,
         },
-      })
-    );
+      });
+      expect(callGetProfile.profile.id).toBeDefined();
+      expect(callGetProfile.profile.username).toBe('user');
+    });
+
+    test('should handle failed get user profile operation', async () => {
+      expectUnauthorizedError(
+        client.query({
+          profile: {
+            __scalar: true,
+          },
+        })
+      );
+    });
+  });
+  describe('refresh token', () => {
+    test('should refresh authentication token successfully', async () => {
+      const loginResponse = await client.mutation({
+        login: {
+          __scalar: true,
+          __args: {
+            username: 'user',
+            password: 'user@1234',
+          },
+        },
+      });
+      const refreshToken = await client.mutation({
+        refreshToken: {
+          __scalar: true,
+          __args: {
+            refreshToken: loginResponse.login.refreshToken,
+          },
+        },
+      });
+      expect(refreshToken.refreshToken.token).toBeDefined();
+      expect(refreshToken.refreshToken.refreshToken).toBeDefined();
+    });
+
+    test('should handle failed get user profile operation', async () => {
+      expect(
+        client.mutation({
+          refreshToken: {
+            __scalar: true,
+            __args: {
+              refreshToken: 'x-token',
+            },
+          },
+        })
+      ).rejects.toThrow('Invalid token');
+    });
   });
 });

@@ -9,6 +9,12 @@ const ONE_HOUR_IN_SECONDS = 3600;
 const ONE_DAY_IN_SECONDS = 86400;
 
 export class AuthenticationService extends PrimaryRepository<GraphqlContext> {
+  async getProfile() {
+    const account = await this.db.account.findUniqueOrThrow({
+      where: { id: this.context.accountId },
+    });
+    return account;
+  }
   async login(input: MutationLoginArgs) {
     const account = await this.db.account.findFirst({
       where: {
@@ -63,6 +69,9 @@ export class AuthenticationService extends PrimaryRepository<GraphqlContext> {
     const cacheAccount = await this.redis.get(refreshToken);
     if (!cacheAccount) throw new Error('Invalid token');
     const payload = JSON.parse(cacheAccount) as IJwtAuthInfo;
+    const account = await this.db.account.findUniqueOrThrow({
+      where: { id: payload.accountId },
+    });
 
     const newToken = jwtSign({
       payload,
@@ -90,6 +99,7 @@ export class AuthenticationService extends PrimaryRepository<GraphqlContext> {
     ]);
 
     return {
+      account: account,
       token: newToken,
       refreshToken: newRefreshToken,
       expire: jwtVerify(newToken).expires.toString(),
