@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@blogs/database": ["libs/database/src/index.ts"],
+      "@blogs/graphql": ["libs/graphql/src/index.ts"],
       "@blogs/utils": ["libs/utils/src/index.ts"]
     }
   },
