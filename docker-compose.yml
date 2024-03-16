@@ -11,7 +11,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - ${POSTGRES_SERVER_PORT}:5432
+      - 5432:5432
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
     networks:
@@ -22,7 +22,7 @@ services:
     image: redis:7.2.4
     restart: on-failure
     ports:
-      - ${REDIS_SERVER_PORT}:6379
+      - 6379:6379
     command: --requirepass ${REDIS_PASSWORD}
     networks:
       - blogs-network
