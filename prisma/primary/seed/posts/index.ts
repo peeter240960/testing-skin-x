@@ -24,7 +24,7 @@ export async function seedPost() {
           const postTag = await client.postTag.create({
             data: {
               postId: post.id,
-              tagId: tag.id,
+              tagId: tag.name,
               createdBy,
             },
           });

@@ -8,6 +8,7 @@ import { prismaClient, redisClient } from '@blogs/database';
 import { config } from 'dotenv';
 import { AuthenticationService } from './graphql/modules/authentication/authentication.service';
 import cors from '@fastify/cors';
+import { PostService } from './graphql/modules/post/post.service';
 
 config();
 
@@ -50,6 +51,7 @@ export async function main() {
 
       return {
         ...graphqlContext,
+        postService: new PostService(graphqlContext),
         authenticationService: new AuthenticationService(graphqlContext),
       };
     },

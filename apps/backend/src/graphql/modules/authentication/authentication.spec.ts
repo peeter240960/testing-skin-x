@@ -80,7 +80,7 @@ describe('Authentication', () => {
       expect(refreshToken.refreshToken.refreshToken).toBeDefined();
     });
 
-    test('should handle failed get user profile operation', async () => {
+    test('should handle failed refresh authentication token operation', async () => {
       expect(
         client.mutation({
           refreshToken: {

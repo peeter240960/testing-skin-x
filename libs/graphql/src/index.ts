@@ -13,4 +13,5 @@ export { ExceedLimitResource } from './errors/exceed-limit-resource';
 export { verifyLocalAuth } from './auth/local';
 export type { GraphqlContext } from './auth/@types';
 export { sdlTypeDef } from './schemas/sdl';
+export { sortTypeDef } from './schemas/sort';
 export { GraphqlError } from './errors/graphql-error';

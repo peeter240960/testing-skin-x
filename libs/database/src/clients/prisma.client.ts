@@ -1,12 +1,12 @@
-import { PrismaClientPrimary } from '..';
+import { PrismaClient } from "..";
 
-let _primaryPrismaClient: PrismaClientPrimary | null = null;
+let _primaryPrismaClient: PrismaClient | null = null;
 
-function getClient(): PrismaClientPrimary {
+function getClient(): PrismaClient {
   if (_primaryPrismaClient) {
     return _primaryPrismaClient;
   }
-  _primaryPrismaClient = new PrismaClientPrimary();
+  _primaryPrismaClient = new PrismaClient();
 
   return _primaryPrismaClient;
 }

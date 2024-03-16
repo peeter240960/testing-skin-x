@@ -1,6 +1,6 @@
 import { Redis } from 'ioredis';
 import { redisClient } from '../clients/redis.client';
-import { PrismaClientPrimary, prismaClient } from '..';
+import { PrismaClient, prismaClient } from '..';
 
 export interface ICommand {
   readonly sql: string;
@@ -9,7 +9,7 @@ export interface ICommand {
 
 export class PrimaryRepository<Context = never> {
   context: Context;
-  protected db: PrismaClientPrimary;
+  protected db: PrismaClient;
   protected redis: Redis;
 
   constructor(...params: Context extends never ? [] : [Context]) {

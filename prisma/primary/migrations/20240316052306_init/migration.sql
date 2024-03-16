@@ -26,21 +26,20 @@ CREATE TABLE "post" (
 
 -- CreateTable
 CREATE TABLE "tag" (
-    "id" UUID NOT NULL,
-    "name" UUID NOT NULL,
+    "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
     "createdBy" TEXT NOT NULL,
     "updatedBy" TEXT,
 
-    CONSTRAINT "tag_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "tag_pkey" PRIMARY KEY ("name")
 );
 
 -- CreateTable
 CREATE TABLE "post_tag" (
     "id" UUID NOT NULL,
     "postId" UUID NOT NULL,
-    "tagId" UUID NOT NULL,
+    "tagId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
     "createdBy" TEXT NOT NULL,
@@ -52,11 +51,8 @@ CREATE TABLE "post_tag" (
 -- CreateIndex
 CREATE UNIQUE INDEX "account_username_key" ON "account"("username");
 
--- CreateIndex
-CREATE UNIQUE INDEX "tag_name_key" ON "tag"("name");
-
 -- AddForeignKey
-ALTER TABLE "post_tag" ADD CONSTRAINT "post_tag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "tag"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "post_tag" ADD CONSTRAINT "post_tag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "tag"("name") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "post_tag" ADD CONSTRAINT "post_tag_postId_fkey" FOREIGN KEY ("postId") REFERENCES "post"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

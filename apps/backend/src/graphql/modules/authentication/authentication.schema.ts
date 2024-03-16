@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const typeDef = gql`
   type Account {
-    id: String!
+    id: ID!
     username: String!
   }
   type Authentication {
