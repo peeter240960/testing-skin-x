@@ -10,6 +10,7 @@ import { AuthenticationService } from './graphql/modules/authentication/authenti
 import cors from '@fastify/cors';
 import { PostService } from './graphql/modules/post/post.service';
 import { TagService } from './graphql/modules/tag/tag.service';
+import { NoSchemaIntrospectionCustomRule } from 'graphql';
 
 config();
 
@@ -28,6 +29,9 @@ export async function main() {
     ide: false,
     path: '/graphql',
     schema,
+    validationRules: process.env.NODE_ENV === 'production' && [
+      NoSchemaIntrospectionCustomRule,
+    ],
     errorFormatter(execution, context) {
       const defaultError = mercurius.defaultErrorFormatter(execution, context);
       logger.error({
@@ -44,7 +48,8 @@ export async function main() {
           ''
         ) as string,
       };
-      const token = request.headers['authorization']?.replace('Bearer ', '') ?? null;
+      const token =
+        request.headers['authorization']?.replace('Bearer ', '') ?? null;
       if (token) {
         const localAuth = await verifyLocalAuth(token);
         graphqlContext.accountId = localAuth.accountId;
