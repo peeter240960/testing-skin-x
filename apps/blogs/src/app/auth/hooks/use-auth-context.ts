@@ -1,15 +1,21 @@
-'use client';
-
-import { useContext } from 'react';
-
-import { AuthContext } from '../context/jwt/auth-context';
+import { useAtomValue } from 'jotai';
+import { useEffect, useState } from 'react';
+import { authAtom } from '../store/jwt';
 
 // ----------------------------------------------------------------------
 
 export const useAuthContext = () => {
-  const context = useContext(AuthContext);
+  const [loading, setLoadin] = useState(true);
+  const auth = useAtomValue(authAtom);
 
-  if (!context) throw new Error('useAuthContext context must be use inside AuthProvider');
+  useEffect(() => {
+    setLoadin(false)
+  }, [])
+  
 
-  return context;
+  return {
+    loading,
+    authenticated: !!auth?.account.id,
+    account: auth?.account,
+  };
 };

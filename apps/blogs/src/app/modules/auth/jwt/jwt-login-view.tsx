@@ -2,9 +2,12 @@ import { Button, Card, Stack, TextField, Typography } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useLoginMutation } from '../../../graphql/generated';
 import AlertApolloError from '../../../components/alert-apollo-error';
+import { useSetAtom } from 'jotai';
+import { authAtom } from '../../../auth/store/jwt';
 
 export default function JwtLoginView() {
   const [callLogin, callLoginResponse] = useLoginMutation();
+  const setAuth = useSetAtom(authAtom);
   const [form, setForm] = useState({
     username: '',
     password: '',
@@ -28,8 +31,9 @@ export default function JwtLoginView() {
           password: form.password,
         },
       });
+      setAuth(data?.login);
     },
-    [callLogin, form.password, form.username]
+    [callLogin, form.password, form.username, setAuth]
   );
 
   return (

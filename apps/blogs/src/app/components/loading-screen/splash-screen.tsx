@@ -31,6 +31,7 @@ export default function SplashScreen({ sx, ...other }: BoxProps) {
         alignItems: 'center',
         justifyContent: 'center',
         bgcolor: 'background.default',
+        opacity: 0.2,
         ...sx,
       }}
       {...other}
@@ -48,7 +49,7 @@ export default function SplashScreen({ sx, ...other }: BoxProps) {
             repeat: Infinity,
           }}
         >
-          Logo
+          Loading
         </m.div>
 
         <Box

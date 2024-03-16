@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 
 import Header from './header';
+import { Container } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -17,9 +18,10 @@ export default function MainLayout({ children }: Props) {
         component="main"
         sx={{
           flexGrow: 1,
+          py: 3
         }}
       >
-        {children}
+        <Container>{children}</Container>
       </Box>
     </Box>
   );
