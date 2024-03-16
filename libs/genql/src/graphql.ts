@@ -2,13 +2,13 @@ import { createClient } from './generated';
 import { fetch } from 'undici';
 
 export const client = createClient({
-  url: 'http://0.0.0.0:3030/graphql',
+  url: 'http://0.0.0.0:3000/graphql',
   fetch,
 });
 
 export const createAuthorizeClient = (authorization: string) =>
   createClient({
-    url: 'http://0.0.0.0:3030/graphql',
+    url: 'http://0.0.0.0:3000/graphql',
     fetch,
     headers: {
       authorization,

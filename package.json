@@ -13,6 +13,8 @@
     "blogs:dev": "nx run blogs:serve",
     "backend:dev": "nx run backend:serve",
     "backend:test": "nx run backend:test",
+    "backend:build": "nx run backend:build",
+    "backend:build-docker": "nx run backend:docker-build",
     "codegen": "ts-node --project tools/tsconfig.tools.json -r tsconfig-paths/register tools/bin/codegen.ts",
     "genql": "ts-node --project tools/tsconfig.tools.json -r tsconfig-paths/register tools/bin/genql.ts"
   },

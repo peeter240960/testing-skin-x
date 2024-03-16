@@ -7,7 +7,7 @@ export const mutation: Resolvers<AppContext>['Mutation'] = {
     return {
       account: login.account,
       token: `Bearer ${login.token}`,
-      refreshToken: `Bearer ${login.refreshToken}`,
+      refreshToken: login.refreshToken,
       expire: Number(login.expire),
     };
   },
@@ -19,7 +19,7 @@ export const mutation: Resolvers<AppContext>['Mutation'] = {
     return {
       account: newToken.account,
       token: `Bearer ${newToken.token}`,
-      refreshToken: `Bearer ${newToken.refreshToken}`,
+      refreshToken: newToken.refreshToken,
       expire: Number(newToken.expire),
     };
   },

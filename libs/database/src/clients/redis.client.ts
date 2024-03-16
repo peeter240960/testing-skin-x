@@ -1,9 +1,9 @@
 import { config } from 'dotenv';
 import Redis from 'ioredis';
+
 config();
 
 let _redisClient: Redis;
-
 function getRedisClient() {
   if (_redisClient) {
     return _redisClient;
