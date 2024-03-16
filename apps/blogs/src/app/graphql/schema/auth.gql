@@ -1,0 +1,40 @@
+mutation login($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
+    account {
+      ...AccountFields
+    }
+    ...AuthenticationFields
+  }
+}
+
+mutation refreshToken($refreshToken: String!) {
+  refreshToken(refreshToken: $refreshToken) {
+    account {
+      ...AccountFields
+    }
+    ...AuthenticationFields
+  }
+}
+
+mutation logout($refreshToken734: String!) {
+  logout(refreshToken: $refreshToken734) {
+    success
+  }
+}
+
+query profile {
+  profile {
+    ...AccountFields
+  }
+}
+
+fragment AuthenticationFields on Authentication {
+  token
+  expire
+  refreshToken
+}
+
+fragment AccountFields on Account {
+  id
+  username
+}

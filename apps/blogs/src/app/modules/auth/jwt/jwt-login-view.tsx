@@ -1,7 +1,10 @@
 import { Button, Card, Stack, TextField, Typography } from '@mui/material';
 import { useCallback, useState } from 'react';
+import { useLoginMutation } from '../../../graphql/generated';
+import AlertApolloError from '../../../components/alert-apollo-error';
 
 export default function JwtLoginView() {
+  const [callLogin, callLoginResponse] = useLoginMutation();
   const [form, setForm] = useState({
     username: '',
     password: '',
@@ -17,17 +20,23 @@ export default function JwtLoginView() {
     []
   );
   const onSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log(form);
+      const { data } = await callLogin({
+        variables: {
+          username: form.username,
+          password: form.password,
+        },
+      });
     },
-    [form]
+    [callLogin, form.password, form.username]
   );
 
   return (
     <Card sx={{ p: 3 }}>
       <form onSubmit={onSubmit}>
         <Stack spacing={1.5}>
+          <AlertApolloError error={callLoginResponse.error} />
           <Typography variant="h6" p={0} m={0}>
             Login
           </Typography>
@@ -50,7 +59,11 @@ export default function JwtLoginView() {
             value={form['password']}
             required
           />
-          <Button variant="contained" type="submit">
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={callLoginResponse.loading}
+          >
             Login
           </Button>
         </Stack>
