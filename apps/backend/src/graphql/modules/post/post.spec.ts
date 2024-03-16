@@ -1,7 +1,7 @@
 import { authorizeGraphqlClient } from '@blogs/genql';
 
 describe('Post', () => {
-  describe('find many', () => {
+  describe('get posts', () => {
     test('should retrieve multiple posts matching the criteria successfully', async () => {
       const authClient = await authorizeGraphqlClient();
       const limit = 10;
@@ -62,6 +62,8 @@ describe('Post', () => {
         posts.getPosts.edges[0].postTags?.[0]?.tagId
       );
     });
+  });
+  describe('get post by id', () => {
     test('should retrieve an existing post successfully', async () => {
       const authClient = await authorizeGraphqlClient();
       const limit = 10;

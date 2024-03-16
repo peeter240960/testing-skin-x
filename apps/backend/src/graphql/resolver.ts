@@ -10,6 +10,10 @@ import {
   query as authenticationQueryResolver,
 } from './modules/authentication/authentication.resolver';
 import {
+  mutation as tagMutationResolver,
+  query as tagQueryResolver,
+} from './modules/tag/tag.resolver';
+import {
   mutation as postMutationResolver,
   query as postQueryResolver,
   fileds as postFileds
@@ -21,6 +25,7 @@ export const resolvers: Resolvers = {
   Query: {
     ...postQueryResolver,
     ...authenticationQueryResolver,
+    ...tagQueryResolver,
     _sdl: () => {
       return typeDefs;
     },
@@ -28,6 +33,7 @@ export const resolvers: Resolvers = {
   Mutation: {
     ...authenticationMutationResolver,
     ...postMutationResolver,
+    ...tagMutationResolver,
   },
   ...postFileds,
   Upload: GraphQLUpload,

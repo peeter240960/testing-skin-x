@@ -9,14 +9,10 @@ export const typeDef = gql`
     postedBy: String!
     postTags: [PostTag!]
   }
-  type Tag {
-    id: ID!
-    name: String!
-  }
   type PostTag {
     id: ID!
     postId: ID!
-    tagId: ID!
+    tagId: String!
   }
   type PostResponse {
     edges: [Post!]

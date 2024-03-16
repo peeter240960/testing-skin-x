@@ -1,5 +1,6 @@
 import { mergeTypeDefs } from '@graphql-tools/merge';
 import { print } from 'graphql';
+import { typeDef as tagTypeDef } from './modules/tag/tag.schema';
 import { typeDef as postTypeDef } from './modules/post/post.schema';
 import { typeDef as authenticationTypeDef } from './modules/authentication/authentication.schema';
 import { uploadTypeDefs, dateTypeDefs, deleteOperationResultTypeDef, jsonTypeDef, authorizeDirective, sdlTypeDef, sortTypeDef } from '@blogs/graphql';
@@ -8,6 +9,7 @@ const { authorizedDirectiveTypeDefs } = authorizeDirective();
 
 export const typeDefs = print(
   mergeTypeDefs([
+    tagTypeDef,
     postTypeDef,
     authenticationTypeDef,
     authorizedDirectiveTypeDefs,

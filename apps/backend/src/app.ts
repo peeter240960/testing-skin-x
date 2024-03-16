@@ -9,6 +9,7 @@ import { config } from 'dotenv';
 import { AuthenticationService } from './graphql/modules/authentication/authentication.service';
 import cors from '@fastify/cors';
 import { PostService } from './graphql/modules/post/post.service';
+import { TagService } from './graphql/modules/tag/tag.service';
 
 config();
 
@@ -53,6 +54,7 @@ export async function main() {
         ...graphqlContext,
         postService: new PostService(graphqlContext),
         authenticationService: new AuthenticationService(graphqlContext),
+        tagService: new TagService(graphqlContext),
       };
     },
   });
