@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "setup": "yarn && yarn db-primary:migrate && yarn db-primary:seed && yarn codegen && yarn genql",
     "db-primary:pull": "prisma db pull --schema prisma/primary/schema.prisma",
     "db-primary:reset": "prisma migrate reset --schema prisma/primary/schema.prisma",
     "db-primary:migrate": "prisma migrate dev --schema prisma/primary/schema.prisma",

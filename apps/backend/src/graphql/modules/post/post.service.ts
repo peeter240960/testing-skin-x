@@ -45,7 +45,6 @@ export class PostService extends PrimaryRepository<GraphqlContext> {
       ),
     ]);
 
-    console.log(result);
     return {
       edges: result.edges.map(({ node }) => node as Post) ?? [],
       endCursor: result.pageInfo.endCursor,
