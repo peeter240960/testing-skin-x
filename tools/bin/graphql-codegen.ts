@@ -1,12 +1,12 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
+import { typeDefs } from '../../apps/backend/src/graphql/schema';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: 'http://localhost:3000/graphql',
+  schema: typeDefs,
   documents: './apps/blogs/src/app/graphql/**/**/*.gql',
   generates: {
     './apps/blogs/src/app/graphql/generated.ts': {
-      // preset: 'client',
       plugins: ['typescript', 'typescript-operations', 'typescript-react-apollo'],
       config: {
         withHooks: true,
