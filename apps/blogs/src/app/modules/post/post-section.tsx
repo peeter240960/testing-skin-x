@@ -26,6 +26,8 @@ export default function PostSection() {
     onFetchMore: () => {
       fetchMore({
         variables: {
+          search: debouncedQuery,
+          searchByTag: searchByTag,
           cursor: data?.getPosts.endCursor,
           limit,
         },
@@ -53,7 +55,7 @@ export default function PostSection() {
   const renderFilter = (
     <Stack spacing={1}>
       <TextField
-        label="For you"
+        label="Search for you"
         variant="standard"
         value={searchQuery}
         sx={{ '& .MuiInputBase-root': { height: 40 } }}
