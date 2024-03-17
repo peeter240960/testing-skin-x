@@ -1,8 +1,8 @@
-import { Box, Container, Divider, Stack } from '@mui/material';
+import { Container, Stack, Divider, Box } from '@mui/material';
+import PostSection from '../post/post-section';
 import TagSection from '../tag/tag-section';
-import PostSection from './post-section';
 
-export default function PostView() {
+export default function HomeView() {
   return (
     <Container>
       <Stack

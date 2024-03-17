@@ -13,3 +13,6 @@ export function removeStorage(key: string) {
 export function clearStorage() {
   return localStorage.clear();
 }
+export function replaceHtml(str: string) {
+  return str.replace(/<\/?[^>]+(>|$)/g, "");
+}

@@ -1,5 +1,4 @@
 import { redisClient } from '@blogs/database';
-import { AuthenticationError } from '../errors/authentication';
 import { GraphqlContext } from './@types';
 import { IJwtAuthInfo, jwtVerify } from '@blogs/utils';
 
@@ -27,4 +26,8 @@ export async function verifyLocalAuth(
       accountId: account.accountId,
     };
   }
+  return {
+    accountId: null,
+    authorization: null,
+  };
 }

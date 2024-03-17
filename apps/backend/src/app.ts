@@ -51,7 +51,7 @@ export async function main() {
       const token =
         request.headers['authorization']?.replace('Bearer ', '') ?? null;
       if (token) {
-        const localAuth = await verifyLocalAuth(token);
+        const localAuth = await verifyLocalAuth(token);        
         graphqlContext.accountId = localAuth.accountId;
       }
 

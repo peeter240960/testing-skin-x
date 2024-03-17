@@ -39,6 +39,8 @@
     "@graphql-codegen/typescript-resolvers": "^4.0.6",
     "@graphql-tools/schema": "^10.0.3",
     "@graphql-tools/utils": "^10.1.2",
+    "@iconify/react": "^4.1.1",
+    "@mui/lab": "^5.0.0-alpha.168",
     "@mui/material": "^5.15.13",
     "@prisma/client": "5.11.0",
     "add": "^2.0.6",

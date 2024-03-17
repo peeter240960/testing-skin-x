@@ -16,8 +16,8 @@ mutation refreshToken($refreshToken: String!) {
   }
 }
 
-mutation logout($refreshToken734: String!) {
-  logout(refreshToken: $refreshToken734) {
+mutation logout($refreshToken: String!) {
+  logout(refreshToken: $refreshToken) {
     success
   }
 }

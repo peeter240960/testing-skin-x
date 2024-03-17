@@ -1,0 +1,51 @@
+query getTags($search: String, $sort: Sort, $limit: Int!, $skip: Int) {
+  getTags(search: $search, sort: $sort, limit: $limit, skip: $skip) {
+    edges {
+      name
+    }
+    total
+  }
+}
+
+query getPosts($search: String, $searchByTag: String, $sort: Sort, $limit: Int!, $cursor: ID) {
+  getPosts(
+    search: $search
+    searchByTag: $searchByTag
+    sort: $sort
+    limit: $limit
+    cursor: $cursor
+  ) {
+    edges {
+      postTags {
+        ...PostTagFields
+      }
+      ...PostFields
+    }
+    hasNextPage
+    endCursor
+    total
+  }
+}
+
+query getPost($id: ID!) {
+  getPost(id: $id) {
+    postTags {
+      ...PostTagFields
+    }
+    ...PostFields
+  }
+}
+
+fragment PostFields on Post {
+  id
+  title
+  content
+  postedAt
+  postedBy
+}
+
+fragment PostTagFields on PostTag {
+  id
+  postId
+  tagId
+}

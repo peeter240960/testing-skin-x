@@ -5,6 +5,7 @@ import { SplashScreen } from '../../components/loading-screen';
 import { AuthGuard } from '../../auth/guard';
 // ----------------------------------------------------------------------
 
+export const HomePage = lazy(() => import('../../modules/home/home-view'));
 export const PostPage = lazy(() => import('../../modules/post/post-view'));
 const PostDetailsPage = lazy(
   () => import('../../modules/post/post-detail-view')
@@ -23,6 +24,10 @@ export const mainRoutes = [
       </AuthGuard>
     ),
     children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
       {
         path: 'post',
         children: [

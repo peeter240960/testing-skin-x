@@ -15,7 +15,7 @@ export const useAuthContext = () => {
 
   return {
     loading,
-    authenticated: !!auth?.account.id,
+    authenticated: !!auth?.account?.id,
     account: auth?.account,
   };
 };
