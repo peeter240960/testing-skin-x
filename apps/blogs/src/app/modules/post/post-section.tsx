@@ -6,6 +6,7 @@ import { useDebounce } from '../../hooks/use-debounce';
 import { TagChipItem } from '../tag';
 import { useRouter, useSearchParams } from '../../routes/hooks';
 import { paths } from '../../routes/paths';
+import { useInfinitScroll } from './use-infinit-scroll';
 export default function PostSection() {
   const limit = 10;
   const searchParams = useSearchParams();
@@ -13,13 +14,42 @@ export default function PostSection() {
   const searchByTag = searchParams.get('searchByTag');
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedQuery = useDebounce(searchQuery, 700);
-  const { data, loading } = useGetPostsQuery({
+  const { data, loading, fetchMore } = useGetPostsQuery({
     variables: { limit, search: debouncedQuery, searchByTag: searchByTag },
   });
   const posts = useMemo(
     () => data?.getPosts.edges ?? [],
     [data?.getPosts.edges]
   );
+  useInfinitScroll({
+    hasMore: !!(data && data?.getPosts.total > posts.length),
+    onFetchMore: () => {
+      fetchMore({
+        variables: {
+          cursor: data?.getPosts.endCursor,
+          limit,
+        },
+        updateQuery(previousQueryResult, options) {
+          if (
+            !options.fetchMoreResult.getPosts.edges ||
+            !previousQueryResult.getPosts.edges
+          )
+            return previousQueryResult;
+          const newPosts = [
+            ...options.fetchMoreResult.getPosts.edges,
+            ...previousQueryResult.getPosts.edges,
+          ];
+          return {
+            ...previousQueryResult,
+            getPosts: {
+              ...previousQueryResult.getPosts,
+              edges: newPosts,
+            },
+          };
+        },
+      });
+    },
+  });
   const renderFilter = (
     <Stack spacing={1}>
       <TextField
@@ -44,27 +74,9 @@ export default function PostSection() {
       )}
     </Stack>
   );
-  const renderContent = (
-    <>
-      <PostList posts={posts} loading={loading} />
-      {data && data?.getPosts.total > posts.length && (
-        <Stack mt={1}>
-          <Typography
-            component={Box}
-            variant="subtitle2"
-            fontWeight={400}
-            color="green"
-            sx={{ cursor: 'pointer', ':hover': { color: 'black' } }}
-            // onClick={onSeeMoreTopic}
-          >
-            See more topics
-          </Typography>
-        </Stack>
-      )}
-    </>
-  );
+  const renderContent = <PostList posts={posts} loading={loading} />;
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} component={Box}>
       {renderFilter}
       {renderContent}
     </Stack>
