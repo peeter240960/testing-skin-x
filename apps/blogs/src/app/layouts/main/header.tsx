@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
-import { IconButton, Typography } from '@mui/material';
+import { IconButton, Link, Typography } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Iconify from '../../components/iconify';
@@ -9,6 +9,8 @@ import { useCallback } from 'react';
 import { useAtom } from 'jotai';
 import { authAtom } from '../../auth/store/jwt';
 import { clearStorage } from '../../utils';
+import { RouterLink } from '../../routes/components';
+import { paths } from '../../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -22,8 +24,8 @@ export default function Header() {
           refreshToken: auth.refreshToken,
         },
       });
-      setAuth(undefined)
-      clearStorage()
+      setAuth(undefined);
+      clearStorage();
     }
   }, [auth?.refreshToken, callLogout, setAuth]);
 
@@ -51,7 +53,14 @@ export default function Header() {
             color: 'black',
           }}
         >
-          <Typography>Logo</Typography>
+          <Link
+            color="inherit"
+            underline="hover"
+            component={RouterLink}
+            href={paths.root}
+          >
+            <Typography>Logo</Typography>
+          </Link>
           <Box sx={{ flexGrow: 1 }} />
           {auth?.refreshToken && (
             <IconButton
