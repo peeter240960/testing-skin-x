@@ -1,5 +1,5 @@
 import Stack from '@mui/material/Stack';
-import { Divider } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { Post } from '../../graphql/generated';
 import PostItem from './post-item';
 import { PostItemSkeleton } from './post-skeleton';
@@ -19,6 +19,9 @@ export default function PostList({ posts, loading }: Props) {
     <PostItem post={post} key={index} />
   ));
 
+  if (!loading && !posts.length) {
+    return <Typography variant="subtitle2">No data available.</Typography>;
+  }
   return (
     <Stack spacing={1} divider={<Divider flexItem />}>
       {loading ? renderSkeleton : renderList}

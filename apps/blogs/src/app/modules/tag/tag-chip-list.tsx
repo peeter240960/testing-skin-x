@@ -1,4 +1,4 @@
-import { Stack, Skeleton } from '@mui/material';
+import { Stack, Skeleton, Typography } from '@mui/material';
 
 import TagChipItem from './tag-chip-item';
 import { Tag } from '../../graphql/generated';
@@ -19,8 +19,9 @@ export default function TagChipList({ topics, loading }: Props) {
     },
     [router]
   );
-
-  const renderSkeleton = <Skeleton />;
+  const renderSkeleton = [...Array(10)].map((_, index) => (
+    <Skeleton height={40} width={80} key={index} />
+  ));
   const renderList = (
     <>
       {topics.map((topic, index) => (
@@ -33,6 +34,9 @@ export default function TagChipList({ topics, loading }: Props) {
     </>
   );
 
+  if (!loading && !topics.length) {
+    return <Typography variant="subtitle2">No data available.</Typography>;
+  }
   return (
     <Stack direction="row" flexWrap="wrap" useFlexGap spacing={1}>
       {loading ? renderSkeleton : renderList}

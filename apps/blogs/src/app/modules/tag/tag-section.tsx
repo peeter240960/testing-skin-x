@@ -45,7 +45,7 @@ export default function TagSection() {
       </Typography>
 
       <TagChipList topics={tags} loading={tagResponseLoading} />
-      {tagResponse && tagResponse?.getTags.total > tags.length && (
+      {tagResponse && tagResponse?.getTags.total > tags.length && !tagResponseLoading && (
         <Stack mt={1}>
           <Typography
             component={Box}
