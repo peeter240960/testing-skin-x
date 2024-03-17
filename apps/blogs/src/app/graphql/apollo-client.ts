@@ -32,14 +32,6 @@ export const apolloClient = () => {
               if (!accessToken)
                 throw new GraphQLError('Invalid or expire token!');
 
-              const oldHeaders = operation.getContext().headers;
-              operation.setContext({
-                headers: {
-                  ...oldHeaders,
-                  authorization: accessToken,
-                },
-              });
-
               const subscriber = {
                 next: observer.next.bind(observer),
                 error: observer.error.bind(observer),
@@ -58,7 +50,9 @@ export const apolloClient = () => {
     }
   });
   const getAuthContext = (operationName?: string) => {
-    const token = JSON.parse(getStorage(AUTH_KEY) || '{}')?.token || '';
+    const auth = JSON.parse(getStorage(AUTH_KEY) || '{}')
+    const token = auth?.token || '';
+
     return {
       authorization: token,
     };
@@ -93,7 +87,7 @@ export const apolloClient = () => {
           },
         });
       if (refreshTokenResponse.data) {
-        setStorage(AUTH_KEY, JSON.stringify(refreshTokenResponse.data));
+        setStorage(AUTH_KEY, JSON.stringify(refreshTokenResponse.data.refreshToken));
       }
       return refreshTokenResponse.data?.refreshToken.token ?? '';
     } catch (err) {
