@@ -7,6 +7,7 @@
     "backend:dev": "nx run backend:serve",
     "backend:test": "nx run backend:test",
     "backend:build": "nx run backend:build",
+    "blogs:build-docker": "nx run blogs:docker-build",
     "backend:build-docker": "nx run backend:docker-build",
     "codegen": "ts-node --project tools/tsconfig.tools.json -r tsconfig-paths/register tools/bin/codegen.ts",
     "codegen-client": "graphql-codegen --config graphql-codegen.ts",

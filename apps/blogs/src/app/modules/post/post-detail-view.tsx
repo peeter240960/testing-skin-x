@@ -10,7 +10,11 @@ export default function PostDetailView() {
   const { id = '' } = useParams();
   const { loading, data } = useGetPostQuery({ variables: { id }, skip: !id });
   if (loading) {
-    return <LoadingScreen />;
+    return (
+      <Box sx={{ height: 1, width: 1, position: 'fixed', top: 0, left: 0 }}>
+        <LoadingScreen />
+      </Box>
+    );
   }
   return (
     <Container maxWidth={'md'}>
@@ -22,7 +26,14 @@ export default function PostDetailView() {
           <Typography variant="subtitle2" color={'text.secondary'}>
             Published
           </Typography>
-          <Box sx={{width:'4px', height: '4px', background: '#999999', borderRadius: '2px'}} />
+          <Box
+            sx={{
+              width: '4px',
+              height: '4px',
+              background: '#999999',
+              borderRadius: '2px',
+            }}
+          />
           <Typography variant="subtitle2" color={'text.secondary'}>
             {fDate(data?.getPost.postedAt, 'MMM d, yyyy')}
           </Typography>
