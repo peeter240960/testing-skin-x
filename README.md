@@ -11,7 +11,7 @@ This project is a backend system for managing blogs. It provides functionalities
 5. **Database Migration**: Run `yarn setup:database` to apply database migrations and seed initial data.
 6. **Build and Run**: 
    - For development: Run `yarn dev` to start both frontend and backend servers in development mode.
-   - For production: Run `yarn build` to build both frontend and backend for production, then `yarn start` to serve the production build.
+   - For production: Run `yarn build` to build both frontend and backend for production.
    
 #### Available Scripts:
 
