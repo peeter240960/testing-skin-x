@@ -18,6 +18,7 @@ This project is a backend system for managing blogs. It provides functionalities
 - **Development**:
   - `yarn blogs:dev`: Serve the frontend application for blogs.
   - `yarn backend:dev`: Serve the backend in development mode.
+  - `yarn dev`: Serve both frontend and backend in development mode.
   
 - **Testing**:
   - `yarn backend:test`: Run tests for the backend.
