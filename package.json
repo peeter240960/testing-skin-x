@@ -13,7 +13,7 @@
     "blogs:build-docker": "nx run blogs:docker-build",
     "backend:build-docker": "nx run backend:docker-build",
     "codegen": "ts-node --project tools/tsconfig.tools.json -r tsconfig-paths/register tools/bin/codegen.ts",
-    "codegen-client": "graphql-codegen --project tools/tsconfig.tools.json -r tsconfig-paths/register --config tools/bin/graphql-codegen.ts",
+    "codegen-client": "yarn db-primary:generate && graphql-codegen --project tools/tsconfig.tools.json -r tsconfig-paths/register --config tools/bin/graphql-codegen.ts",
     "genql": "ts-node --project tools/tsconfig.tools.json -r tsconfig-paths/register tools/bin/genql.ts",
     "setup:backend": "yarn && yarn db-primary:generate && yarn codegen && yarn genql",
     "setup:database": "yarn db-primary:migrate && yarn db-primary:seed",
