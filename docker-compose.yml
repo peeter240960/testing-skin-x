@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  db-postgres:
-    container_name: db-postgres
+  db-primary:
+    container_name: db-primary
     image: postgres:15.6
     restart: on-failure
     environment:
@@ -17,8 +17,8 @@ services:
     networks:
       - blogs-network
 
-  cache-redis:
-    container_name: cache-redis
+  cache:
+    container_name: cache
     image: redis:7.2.4
     restart: on-failure
     ports:
@@ -37,6 +37,22 @@ services:
       - 3000:3000
     networks:
       - blogs-network
+    depends_on:
+      - cache
+      - db-primary
+
+  blogs:
+    container_name: blogs
+    build:
+      context: ./
+      dockerfile: apps/blogs/Dockerfile
+    restart: on-failure
+    ports:
+      - 4200:80
+    networks:
+      - blogs-network
+    depends_on:
+      - backend
 
 networks:
   blogs-network:

@@ -10,6 +10,10 @@ FROM node:21-bullseye
 ENV HOST=0.0.0.0
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV DATABASE_URL=postgres://johndoe:randompassword@db-primary:5432/blog?schema=public
+ENV REDIS_URL=redis://:randompassword@cache:6379/0
+ENV JWT_SECRET=JWT_SECRETJWT_ISSER
+ENV JWT_ISSER=JWT_ISSERJWT_SECRETJWT_ISSER
 
 # Set the working directory
 WORKDIR /app
@@ -21,7 +25,6 @@ RUN addgroup --system backend && \
 # Copy the built application code
 COPY dist/apps/backend backend
 COPY prisma prisma
-COPY .env.prod .env
 
 # Change ownership of the copied files
 RUN chown -R backend:backend .

@@ -1,14 +1,16 @@
 import { createClient } from './generated';
 import { fetch } from 'undici';
+import { config } from 'dotenv';
+config();
 
 export const client = createClient({
-  url: 'http://0.0.0.0:3000/graphql',
+  url: process.env.GRAPHQL_ENDPOINT,
   fetch,
 });
 
 export const createAuthorizeClient = (authorization: string) =>
   createClient({
-    url: 'http://0.0.0.0:3000/graphql',
+    url: process.env.GRAPHQL_ENDPOINT,
     fetch,
     headers: {
       authorization,
